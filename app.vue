@@ -4,6 +4,15 @@
   </div>
 </template>
 
+<script setup lang="ts">
+  useSeoMeta({
+    title: "국민의힘 단체문자 매크로",
+    ogTitle: "국민의힘 단체문자 매크로",
+    description: "국민의힘 의원들에게 우리 같이 윤석열을 탄핵시킬 용기를 불어넣어줘요.",
+    ogDescription: "국민의힘 의원들에게 우리 같이 윤석열을 탄핵시킬 용기를 불어넣어줘요."
+  })
+</script>
+
 <style lang="scss">
 @font-face {
     font-family: 'Pretendard';
