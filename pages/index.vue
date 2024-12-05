@@ -14,8 +14,26 @@
     return contacts.map(i => i.number).join(",")
   })
 
+  function getMobileOperatingSystem() {
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/android/i.test(userAgent)) {
+        return "Android";
+    }
+
+    if (/iPad|iPhone|iPod|Macintosh/.test(userAgent) && !window.MSStream) {
+        return "iOS";
+    }
+
+    return "unknown";
+}
+
   const smsLink = computed(() => {
+  if (getMobileOperatingSystem() == "iOS") {
     return `sms:/open?addresses=${numbersOnly.value}&body=${content.value}`
+  } else {
+    return `sms:${numbersOnly.value}?body=${content.value}`
+  }
   });
 </script>
 
