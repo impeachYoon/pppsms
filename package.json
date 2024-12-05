@@ -15,6 +15,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@azure/static-web-apps-cli": "^2.0.1",
     "sass-embedded": "^1.82.0"
   }
 }
