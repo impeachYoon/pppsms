@@ -1,6 +1,10 @@
 <template>
   <div class="layout">
     <h1>국민의힘 국회의원 여러분에게 ^응원^의 메시지를 보내보아요</h1>
+    <h2>
+      단체문자로 국민의힘 의원 전원에게 전송하는 매크로입니다.<br>
+      별도 번호가 아닌 사용하시는 분의 휴대폰으로 발송되니 참고해주세요.
+    </h2>
     <textarea v-model="content" placeholder="보낼 내용" />
     <a class="send" :href="smsLink">한번에 보내기</a>
   </div>
@@ -48,6 +52,13 @@
 
   h1 {
     font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: normal;
+    opacity: 0.7;
   }
 
   textarea {
