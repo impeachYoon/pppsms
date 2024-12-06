@@ -209,7 +209,8 @@
   },
   {
     "number": "010-6771-6011",
-    "name": "안철수 의원"
+    "name": "안철수 의원",
+    "hasAgreedToImpeachYoon": true
   },
   {
     "number": "010-4531-2394",
@@ -421,7 +422,8 @@
   },
   {
     "number": "010-5231-2663",
-    "name": "조경태의원"
+    "name": "조경태의원",
+    "hasAgreedToImpeachYoon": true
   },
   {
     "number": "010-9004-9330",

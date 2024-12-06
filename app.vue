@@ -49,10 +49,11 @@ html {
     display: flex;
     width: 100%;
     max-width: 500px;
-    height: 100%;
+    min-height: 100%;
     margin: 0;
     padding: 2em;
-    max-height: 1000px;
+    align-items: center;
+    /* max-height: 1000px; */
 
     >div#__nuxt {
       display: flex;
