@@ -38,18 +38,18 @@
             </u-select-menu>
           </u-form-group>
           <div class="contact-select-options">
-            <u-button @click="selectedContacts = contacts" size="xs" color="green">
+            <u-button @click="selectedContacts = contacts" size="xs" color="green" variant="outline">
               전체 선택
             </u-button>
 
-            <u-button @click="selectedContacts = []" size="xs" color="red">
+            <u-button @click="selectedContacts = []" size="xs" color="red" variant="outline">
               전체 선택 해제
             </u-button>
-            <u-button @click="selectedContacts = onlySympathizers" size="xs" color="black">
-              탄핵 동의 의견을 밝히지 않은 사람만 선택
+            <u-button @click="selectedContacts = onlySympathizers" size="xs" color="white" variant="outline">
+              <span>탄핵 동의 의견을 밝히지 <strong>않은</strong> 사람만 선택</span>
             </u-button>
 
-            <u-button @click="selectedContacts = onlySaneOnes" size="xs" color="black">
+            <u-button @click="selectedContacts = onlySaneOnes" size="xs" color="white" variant="outline">
               탄핵 동의 의견을 밝힌 사람만 선택
             </u-button>
           </div>
@@ -58,7 +58,7 @@
             <u-toggle v-model="splitSend" />
             <span>나누어 보내기</span>
           </div>
-          <u-button v-if="!splitSend" color="black" :to="smsLink">
+          <u-button class="send-confirm" v-if="!splitSend" color="black" :to="smsLink">
             <span v-if="selectedContacts.length == 108">전원에게 한번에 보내기</span>
             <span v-else>{{ selectedContacts.length }}명에게 한번에 보내기</span>
           </u-button>
@@ -214,6 +214,17 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1ex;
+  }
+
+  :global(.split-send-confirm) {
+    text-decoration: none;
+  }
+  :global(.send-confirm) {
+    text-decoration: none;
+  }
+
+  :global(button) {
+    display: unset;
   }
 
   :global(.horizontal-label) {
