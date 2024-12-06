@@ -36,6 +36,10 @@
   line-height: 1.5;
 }
 
+      a {
+        text-decoration: underline;
+      }
+
 html {
   background: #222222;
   color: white;
