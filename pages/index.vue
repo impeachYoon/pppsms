@@ -66,22 +66,11 @@
           <!-- </div> -->
 
           <u-form-group  label="필터">
-          <!--   <u-toggle v-model="useFilter" /> -->
           <div class="contact-select-options">
-            <u-button @click="toggleFilter('voted1')" size="xs" :color="filterColor('voted1')" variant="outline">
-              <span>
-                12/7 탄핵 표결
-                <span v-if="filterValue('voted1') == 'inverse'">불참</span>
-                <span v-if="filterValue('voted1') == 'on'">참여</span>
-              </span>
-            </u-button>
-            <u-button @click="toggleFilter('for_impeachment')" size="xs" :color="filterColor('for_impeachment')" variant="outline">
-              <span>
-                탄핵
-                <span v-if="filterValue('for_impeachment') == 'inverse'">반대 / 의견 표출 없음</span>
-                <span v-else-if="filterValue('for_impeachment') == 'on'">동의</span>
-                <span v-else>동의 여부</span>
-              </span>
+            <u-button v-for="type in tagTypes" @click="toggleFilter(type.tag)" :color="filterColor(type.tag)" variant="outline">
+              <span v-if="filterValue(type.tag) == 'off'">{{ type.buttonText.neutral }}</span>
+              <span v-else-if="filterValue(type.tag) == 'inverse'">{{ type.buttonText.negative }}</span>
+              <span v-else-if="filterValue(type.tag) == 'on'">{{ type.buttonText.positive }}</span>
             </u-button>
           </div>
           </u-form-group>
@@ -108,7 +97,7 @@
 </template>
 
 <script setup scoped>
-  import contacts from "assets/contacts5.json"
+  import contacts from "assets/contacts.json"
   import zalgo from "to-zalgo"
   import { romanize, disassemble } from 'es-hangul';
 
@@ -126,12 +115,32 @@
     {
       tag: "for_impeachment",
       title: "탄핵 찬성",
+      buttonText: {
+        neutral: "탄핵 찬성 여부",
+        negative: "탄핵 반대 / 의견 표출 없음",
+        positive: "탄핵 찬성"
+      },
       color: 'green'
     },
     {
       tag: "voted1",
-      title: "12/7 표결 참여",
+      title: "12/7 탄핵안 표결 참여",
+      buttonText: {
+        neutral: "12/7 탄핵안 표결",
+        negative: "12/7 탄핵안 표결 불참",
+        positive: "12/7 탄핵안 표결 참여"
+      },
       color: 'blue'
+    },
+    {
+      tag: "martial_law",
+      title: "계엄령 해제 참여",
+      buttonText: {
+        neutral: "계염령 해제",
+        negative: "계엄령 해제 불참",
+        positive: "계엄형 해제 참여"
+      },
+      color: 'red'
     }
   ]
 
