@@ -49,11 +49,11 @@
               전체 선택 해제
             </u-button>
             <u-button @click="selectedContacts = onlySympathizers" size="xs" color="white" variant="outline">
-              <span>탄핵 동의 의견을 밝히지 <strong>않은</strong> 사람만 선택</span>
+              <span>탄핵 표결에 참여하지 <strong>않은</strong> 사람만 선택</span>
             </u-button>
 
             <u-button @click="selectedContacts = onlySaneOnes" size="xs" color="white" variant="outline">
-              탄핵 동의 의견을 밝힌 사람만 선택
+              탄핵 표결에 참여한 사람만 선택
             </u-button>
           </div>
 
