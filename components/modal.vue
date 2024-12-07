@@ -1,28 +1,4 @@
 <template>
-    <div class="modal">
-      <div>
-        <u-checkbox v-model="splitSend" id="splitSend" label="나누어 보내기" />
-      </div>
-      <!-- <a class="send" :href="smsLink" v-if="!splitSend">보내기</a> -->
-      <u-button v-if="!splitSend" color="black">보내기</u-button>
-      <div class="split-send" v-else>
-        <u-form-group label="분할 전송 횟수">
-          <u-input type="number" v-model="splitCount" />
-        </u-form-group>
-        <!-- <span class="split-count"> -->
-        <!--   <u-input type="number" v-model="splitCount"> -->
-        <!--     <template #trailing> -->
-        <!--     번 -->
-        <!--     </template> -->
-        <!--   </u-input> -->
-        <!--   에 나누어 보내기 (1회 당 {{ chunkSize }} 인) -->
-        <!-- </span> -->
-        <div class="send-links">
-          <a class="send" v-for="(link, i) in splitSendLinks" :href="link">{{i + 1}}번째 분할전송 보내기</a>
-        </div>
-      </div>
-    </div>
-</template>
 
 <script setup>
   import contacts from "assets/contacts.json"
@@ -84,3 +60,12 @@ const props = defineProps(['content'])
     })
   })
 </script>
+
+<style lang="scss">
+.send-modal {
+    position: fixed;
+    display: flex;
+    z-index: 1;
+
+}
+</style>

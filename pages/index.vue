@@ -15,12 +15,16 @@
       color="white"
       variant="outline"
       placeholder="보낼 내용"
-      rows="5"
-      size="m"
+      :rows="5"
     />
+    <div class="buttons">
       <u-button color="black" @click="isSendModalOpened = true">
         보내기
       </u-button>
+      <u-button color="black" @click="convertContent">
+        스팸 필터 피하기
+      </u-button>
+    </div>
 
       <u-modal v-model="isSendModalOpened">
         <div class="send-modal">
@@ -102,6 +106,29 @@
   watch(content, () => {
     clickedButtonIndices.value = []
   })
+
+  function convertContent() {
+    content.value = convert(content.value)
+    console.log("asdf")
+  }
+
+  function convert(original) {
+    let text = original
+
+    const letters = [
+      "가","나","다","라","마","바","사","아","자","차","카","타","파","하",
+      "우","주"
+    ]
+    const replacements = [
+      "㉮","㉯","㉰","㉱","㉲","㉳","㉴","㉵","㉶","㉷","㉸","㉹","㉺","㉻",
+      "㉾","㈜"
+    ]
+    for (let idx = 0; idx < letters.length; idx++) {
+      text = text.replaceAll(letters[idx], replacements[idx])
+    }
+
+    return text
+  }
 
   function splitClicked(index) {
     clickedButtonIndices.value.push(index)
@@ -192,6 +219,15 @@
     font-size: 1rem;
     font-weight: normal;
     opacity: 0.7;
+  }
+
+  div.buttons {
+    display: flex;
+    gap: 1em;
+
+    >* {
+      flex-grow: 1;
+    }
   }
 
 
