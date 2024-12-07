@@ -17,14 +17,22 @@
       placeholder="보낼 내용"
       :rows="5"
     />
+      <u-form-group label="스팸 피하기">
     <div class="buttons">
-      <u-button color="black" @click="isSendModalOpened = true">
-        보내기
+      <u-button color="gray" @click="convertContent">
+        글씨 변환
       </u-button>
-      <u-button color="black" @click="convertContent">
-        스팸 필터 피하기
+      <u-button color="gray" @click="romanizeContent">
+        영어로 변환
+      </u-button>
+      <u-button color="gray" @click="disassembleContent">
+        자모 분해
       </u-button>
     </div>
+      </u-form-group>
+    <u-button color="black" @click="isSendModalOpened = true">
+      보내기
+    </u-button>
 
       <u-modal v-model="isSendModalOpened">
         <div class="send-modal">
@@ -85,6 +93,7 @@
 <script setup scoped>
   import contacts from "assets/contacts.json"
   import zalgo from "to-zalgo"
+  import { romanize, disassemble } from 'es-hangul';
 
   const selectedContacts = ref(contacts)
 
@@ -110,7 +119,14 @@
 
   function convertContent() {
     content.value = convert(content.value)
-    console.log("asdf")
+  }
+
+  function romanizeContent() {
+    content.value = romanize(content.value)
+  }
+
+  function disassembleContent() {
+    content.value = disassemble(content.value)
   }
 
   function convert(original) {
