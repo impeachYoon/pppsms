@@ -39,35 +39,52 @@
           <u-form-group label="받을 사람"> 
             <u-select-menu
               searchable
+              :search-attributes="['name']"
               multiple
               :options="contacts"
               v-model="selectedContacts"
             >
               <template #label>
-                <span v-if="selectedContacts.length > 1" class="truncate">{{ selectedContacts.map(i => i.name).join(", ") }}</span>
+                <span v-if="selectedContacts.length >= 1" class="truncate">{{ selectedContacts.map(i => i.name).join(", ") }}</span>
+                <span v-else>선택된 사람 없음</span>
               </template>
               <template #option="{ option: contact }">
                 {{ contact.name }}
-                <u-badge color="green" v-if="contact.hasAgreedToImpeachYoon">탄핵 찬성 의견 발표</u-badge>
+                <u-badge v-for="tag in contact.tags" :color="getTagType(tag).color">{{ getTagType(tag).title }}</u-badge>
               </template>
             </u-select-menu>
           </u-form-group>
+          <!-- <div class="contact-select-options"> -->
+          <!--   <u-button @click="selectAll" size="xs" color="green" variant="outline"> -->
+          <!--     전체 선택 -->
+          <!--   </u-button> -->
+          <!---->
+          <!--   <u-button @click="clearSelection" size="xs" color="red" variant="outline"> -->
+          <!--     전체 선택 해제 -->
+          <!--   </u-button> -->
+          <!---->
+          <!-- </div> -->
+
+          <u-form-group  label="필터">
+          <!--   <u-toggle v-model="useFilter" /> -->
           <div class="contact-select-options">
-            <u-button @click="selectedContacts = contacts" size="xs" color="green" variant="outline">
-              전체 선택
+            <u-button @click="toggleFilter('voted1')" size="xs" :color="filterColor('voted1')" variant="outline">
+              <span>
+                탄핵 표결
+                <span v-if="filterValue('voted1') == 'inverse'">불참</span>
+                <span v-if="filterValue('voted1') == 'on'">참여</span>
+              </span>
             </u-button>
-
-            <u-button @click="selectedContacts = []" size="xs" color="red" variant="outline">
-              전체 선택 해제
-            </u-button>
-            <u-button @click="selectedContacts = onlySympathizers" size="xs" color="white" variant="outline">
-              <span>탄핵 표결에 참여하지 <strong>않은</strong> 사람만 선택</span>
-            </u-button>
-
-            <u-button @click="selectedContacts = onlySaneOnes" size="xs" color="white" variant="outline">
-              탄핵 표결에 참여한 사람만 선택
+            <u-button @click="toggleFilter('for_impeachment')" size="xs" :color="filterColor('for_impeachment')" variant="outline">
+              <span>
+                탄핵
+                <span v-if="filterValue('for_impeachment') == 'inverse'">반대</span>
+                <span v-else-if="filterValue('for_impeachment') == 'on'">동의</span>
+                <span v-else>동의 여부</span>
+              </span>
             </u-button>
           </div>
+          </u-form-group>
 
           <div class="split-toggle horizontal-label">
             <u-toggle v-model="splitSend" />
@@ -91,7 +108,7 @@
 </template>
 
 <script setup scoped>
-  import contacts from "assets/contacts.json"
+  import contacts from "assets/contacts5.json"
   import zalgo from "to-zalgo"
   import { romanize, disassemble } from 'es-hangul';
 
@@ -104,6 +121,27 @@
   const isSendModalOpened = ref(false)
 
   const clickedButtonIndices = ref([])
+
+  const tagTypes = [
+    {
+      tag: "for_impeachment",
+      title: "탄핵 찬성",
+      color: 'green'
+    },
+    {
+      tag: "voted1",
+      title: "표결 참여",
+      color: 'blue'
+    }
+  ]
+
+  function getTagType(tag) {
+    return tagTypes.find(i => i.tag == tag)
+  }
+
+  function hasTag(currentTag, currentContact) {
+    return arrayContains(currentContact.tags ?? [], currentTag.tag)
+  }
 
   watch(splitCount, () => {
     clickedButtonIndices.value = []
@@ -145,6 +183,19 @@
     }
 
     return zalgo(text)
+  }
+
+  function filterValue(tag) {
+    const filter = filterFind(tag)
+    if (filter == undefined) return 'off'
+    if (filter.inverse) return 'inverse'
+    else return 'on'
+  }
+  function filterColor(tag) {
+    const filter = filterValue(tag)
+    if (filter == 'off') return 'gray'
+    if (filter == 'inverse') return 'red'
+    else return 'green'
   }
 
   function splitClicked(index) {
@@ -192,13 +243,85 @@
 
   const platform = getMobileOperatingSystem()
 
-  const onlySympathizers = computed(() => {
-    return contacts.filter(i => !(i?.hasAgreedToImpeachYoon))
+  let filters = ref([])
+
+  watch(filters, () => {
+    // if (!useFilter) return
+    updateSelection()
   })
 
-  const onlySaneOnes = computed(() => {
-    return contacts.filter(i => (i?.hasAgreedToImpeachYoon))
+  function selectAll() {
+    // useFilter.value = false
+    selectedContacts.value = contacts
+    filters.value = []
+    // updateSelection()
+  }
+
+  function clearSelection() {
+    // useFilter.value = false
+    selectedContacts.value = []
+    filters.value = [{tag: "none", inverse: false}]
+    // updateSelection()
+  }
+
+  function toggleFilter(tag) {
+    const filter = filterFind(tag)
+    if (filter == undefined) {
+      filters.value.push({
+        tag: tag,
+        inverse: true
+      })
+      updateSelection()
+      return
+    }
+    if (filter.inverse) {
+      filterChange(tag, false)
+    } else {
+      filterRemove(tag)
+    }
+    updateSelection()
+  }
+
+  function updateSelection() {
+    // if (!useFilter.value) return
+    selectedContacts.value = filteredContacts.value
+  }
+
+  const filteredContacts = computed(() => {
+    if (filters.value.length == 0) return contacts
+    return contacts.filter(i => {
+      const passesFilter = filters.value.map(filter => {
+        if (arrayContains(i.tags ?? [], filter.tag)) {
+          return !filter.inverse
+        } else {
+          if (filter.inverse) {
+            return true
+          }
+        }
+      })
+      return passesFilter.every(i => i)
+    })
   })
+
+  function filterFind(tag) {
+    return filters.value.find(i => i.tag == tag)
+  }
+
+  function filterChange(tag, inverse) {
+  filters.value = filters.value.map(i => {
+    if (i.tag != tag) return i
+    i.inverse = inverse
+    return i
+  })
+  }
+
+  function filterRemove(tag) {
+    filters.value = filters.value.filter(i => i.tag != tag)
+  }
+
+  function arrayContains(array, content) {
+    return array.find(i => i == content) != undefined
+  }
 
   function createLink(numbers, body) {
     if (getMobileOperatingSystem() == "iOS") {
