@@ -78,7 +78,7 @@
             <u-button @click="toggleFilter('for_impeachment')" size="xs" :color="filterColor('for_impeachment')" variant="outline">
               <span>
                 탄핵
-                <span v-if="filterValue('for_impeachment') == 'inverse'">반대</span>
+                <span v-if="filterValue('for_impeachment') == 'inverse'">반대 / 의견 표출 없음</span>
                 <span v-else-if="filterValue('for_impeachment') == 'on'">동의</span>
                 <span v-else>동의 여부</span>
               </span>
