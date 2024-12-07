@@ -84,6 +84,7 @@
 
 <script setup scoped>
   import contacts from "assets/contacts.json"
+  import zalgo from "to-zalgo"
 
   const selectedContacts = ref(contacts)
 
@@ -127,7 +128,7 @@
       text = text.replaceAll(letters[idx], replacements[idx])
     }
 
-    return text
+    return zalgo(text)
   }
 
   function splitClicked(index) {
