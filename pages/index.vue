@@ -70,7 +70,7 @@
           <div class="contact-select-options">
             <u-button @click="toggleFilter('voted1')" size="xs" :color="filterColor('voted1')" variant="outline">
               <span>
-                탄핵 표결
+                12/7 탄핵 표결
                 <span v-if="filterValue('voted1') == 'inverse'">불참</span>
                 <span v-if="filterValue('voted1') == 'on'">참여</span>
               </span>
@@ -130,7 +130,7 @@
     },
     {
       tag: "voted1",
-      title: "표결 참여",
+      title: "12/7 표결 참여",
       color: 'blue'
     }
   ]
@@ -246,22 +246,17 @@
   let filters = ref([])
 
   watch(filters, () => {
-    // if (!useFilter) return
     updateSelection()
   })
 
   function selectAll() {
-    // useFilter.value = false
     selectedContacts.value = contacts
     filters.value = []
-    // updateSelection()
   }
 
   function clearSelection() {
-    // useFilter.value = false
     selectedContacts.value = []
     filters.value = [{tag: "none", inverse: false}]
-    // updateSelection()
   }
 
   function toggleFilter(tag) {
@@ -283,7 +278,6 @@
   }
 
   function updateSelection() {
-    // if (!useFilter.value) return
     selectedContacts.value = filteredContacts.value
   }
 
