@@ -97,11 +97,14 @@
 </template>
 
 <script setup scoped>
-  import contacts from "assets/contacts.json"
+  import contacts from "assets/contacts2.json"
   import zalgo from "to-zalgo"
   import { romanize, disassemble } from 'es-hangul';
 
   const selectedContacts = ref(contacts)
+
+  const colorMode = useColorMode()
+  colorMode.preference = "dark"
 
   const content = ref("")
   const splitSend = ref(false)
@@ -141,6 +144,16 @@
         positive: "계엄형 해제 참여"
       },
       color: 'red'
+    },
+    {
+      tag: "sp_vote",
+      title: "상설특검 찬성",
+      buttonText: {
+        neutral: "상설특검 표결",
+        negative: "상설특검 반대 표결 / 기권",
+        positive: "상설특검 찬성 표결"
+      },
+      color: 'purple'
     }
   ]
 
