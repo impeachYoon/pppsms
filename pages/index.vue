@@ -121,7 +121,7 @@
       buttonText: {
         neutral: "탄핵 찬성 여부",
         negative: "탄핵 반대 / 의견 표출 없음",
-        positive: "탄핵 찬성"
+        positive: "탄핵 찬성 / 조건부 찬성"
       },
       color: 'green'
     },
