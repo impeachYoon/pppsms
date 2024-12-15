@@ -111,6 +111,12 @@
 
   const clickedButtonIndices = ref([])
 
+  onMounted(() => {
+    console.log("🐣 궁금하시다면 여전히 소스 코드는 GitHub 저장소에 공개되어있습니다. 별 거는 없구 Nuxt 3 기반의 간단한 SPA입니다.")
+    console.log("http://github.com/impeachYoon/pppsms")
+    console.log("개발자 도구까지 열어볼 정도로 관심 가져주셔서 감사합니다 😊")
+  })
+
   const tagTypes = [
     {
       tag: "for_impeachment",
